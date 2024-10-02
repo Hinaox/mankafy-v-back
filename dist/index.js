@@ -1,10 +1,15 @@
+import 'dotenv/config';
 import express from 'express';
-import userRoutes from "./routes/userRoutes.js";
+import userRoutes from "./routes/userRoute.js";
 import db from './models/db.js';
+import locationRoute from './routes/locationRoute.js';
+import activityRoute from './routes/activityRoute.js';
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
 // Initialiser les routes
 app.use('/users', userRoutes);
+app.use('/location', locationRoute);
+app.use('/activity', activityRoute);
 // Connexion à la base de données et démarrage du serveur
 db.sequelize.sync({ alter: true })
     .then(() => {

@@ -19,6 +19,11 @@ class User extends Model {
     // Initialisation du modèle avec Sequelize
     static initModel(sequelize) {
         User.init({
+            id: {
+                type: DataTypes.INTEGER,
+                autoIncrement: true,
+                primaryKey: true,
+            },
             username: {
                 type: DataTypes.STRING,
                 allowNull: false,
@@ -44,7 +49,7 @@ class User extends Model {
                 type: DataTypes.STRING,
                 allowNull: true,
             },
-            profilPict: {
+            profilPic: {
                 type: DataTypes.STRING,
                 allowNull: true,
             },

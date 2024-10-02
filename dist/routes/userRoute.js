@@ -83,4 +83,4 @@ router.get('/protected', tokenService, (req, res) => {
     });
 });
 export default router;
-//# sourceMappingURL=userRoutes.js.map
+//# sourceMappingURL=userRoute.js.map

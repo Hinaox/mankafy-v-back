@@ -2,6 +2,7 @@ import { Model, DataTypes, Sequelize } from 'sequelize';
 import bcrypt from 'bcrypt';
 
 class User extends Model {
+    public id!: number;
     public username!: string;
     public email!: string;
     public password!: string;
@@ -19,6 +20,11 @@ class User extends Model {
     static initModel(sequelize: Sequelize) {
         User.init(
             {
+                id: {
+                    type: DataTypes.INTEGER,
+                    autoIncrement: true,
+                    primaryKey: true,
+                },
                 username: {
                     type: DataTypes.STRING,
                     allowNull: false,
@@ -44,7 +50,7 @@ class User extends Model {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
-                profilPict: {
+                profilPic: {
                     type: DataTypes.STRING,
                     allowNull: true,
                 },
