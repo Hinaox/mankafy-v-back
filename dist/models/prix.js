@@ -1,5 +1,5 @@
 // Dans le fichier prix.ts
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from "sequelize";
 class Prix extends Model {
     static initModel(sequelize) {
         Prix.init({
@@ -12,8 +12,8 @@ class Prix extends Model {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'activity', // Nom du modèle cible
-                    key: 'id',
+                    model: "activity", // Nom du modèle cible
+                    key: "id",
                 },
             },
             name: {
@@ -30,14 +30,14 @@ class Prix extends Model {
             },
         }, {
             sequelize,
-            modelName: 'prix',
+            modelName: "prix",
             freezeTableName: true,
             timestamps: true,
         });
     }
     static associate(models) {
         // Relation avec le modèle Activity
-        Prix.belongsTo(models.Activity, { foreignKey: 'activityId' });
+        Prix.belongsTo(models.Activity, { foreignKey: "activityId" });
     }
 }
 export default (sequelize) => {

@@ -8,76 +8,76 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Router } from "express";
-import db from "../models/db";
-const photoRouter = Router();
-// Create Photo
-photoRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+import db from "../models/db.js";
+const planningRoute = Router();
+// Create Planning
+planningRoute.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const photo = yield db.Photo.create(req.body);
-        res.status(201).json(photo);
+        const planning = yield db.PlanningClient.create(req.body);
+        res.status(201).json(planning);
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
 }));
-// Read Photos
-photoRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Read Planning
+planningRoute.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const photos = yield db.Photo.findAll();
-        res.status(200).json(photos);
+        const planning = yield db.PlanningClient.findAll();
+        res.status(200).json(planning);
     }
     catch (error) {
         res.status(500).json({ error: error.message });
     }
 }));
-// Read Photo by ID
-photoRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Read Planning by ID
+planningRoute.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const photo = yield db.Photo.findByPk(req.params.id);
-        if (photo) {
-            res.status(200).json(photo);
+        const planning = yield db.PlanningClient.findByPk(req.params.id);
+        if (planning) {
+            res.status(200).json(planning);
         }
         else {
-            res.status(404).json({ error: "Photo not found" });
+            res.status(404).json({ error: "PlanningClient not found" });
         }
     }
     catch (error) {
         res.status(500).json({ error: error.message });
     }
 }));
-// Update Photo
-photoRouter.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Update Planning
+planningRoute.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const photo = yield db.Photo.update(req.body, {
+        const planning = yield db.PlanningClient.update(req.body, {
             where: { id: req.params.id },
         });
-        if (photo[0]) {
-            res.status(200).json({ message: "Photo updated successfully" });
+        if (planning[0]) {
+            res.status(200).json({ message: "PlanningClient updated successfully" });
         }
         else {
-            res.status(404).json({ error: "Photo not found" });
+            res.status(404).json({ error: "PlanningClient not found" });
         }
     }
     catch (error) {
         res.status(400).json({ error: error.message });
     }
 }));
-// Delete Photo
-photoRouter.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+// Delete Planning
+planningRoute.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const deleted = yield db.Photo.destroy({
+        const deleted = yield db.PlanningClient.destroy({
             where: { id: req.params.id },
         });
         if (deleted) {
             res.status(204).send();
         }
         else {
-            res.status(404).json({ error: "Photo not found" });
+            res.status(404).json({ error: "PlanningClient not found" });
         }
     }
     catch (error) {
         res.status(500).json({ error: error.message });
     }
 }));
-export default photoRouter;
-//# sourceMappingURL=photoRoute.js.map
+export default planningRoute;
+//# sourceMappingURL=planningClientRoute.js.map

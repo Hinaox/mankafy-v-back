@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from "sequelize";
 class Activity extends Model {
     // Initialisation du modèle avec Sequelize
     static initModel(sequelize) {
@@ -16,8 +16,8 @@ class Activity extends Model {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'location', // Référence au modèle `Location` pour lier une activité à un lieu
-                    key: 'id',
+                    model: "location", // Référence au modèle `Location` pour lier une activité à un lieu
+                    key: "id",
                 },
             },
             point_x: {
@@ -42,7 +42,7 @@ class Activity extends Model {
             },
         }, {
             sequelize,
-            modelName: 'activity',
+            modelName: "activity",
             freezeTableName: true,
         });
     }
