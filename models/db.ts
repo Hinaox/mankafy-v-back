@@ -6,7 +6,7 @@ import UserRoleModel from "./userRole.js";
 import Location from "./location.js";
 import Activity from "./activity.js";
 import Photo from "./photo.js";
-import Prix from "./prix.js";
+import Price from "./price.js";
 import PlanningClient from "./planningClient.js";
 import planningClientActivity from "./planningClientActivity.js";
 
@@ -32,7 +32,7 @@ try {
   db.Location = Location(sequelize);
   db.Activity = Activity(sequelize);
   db.Phto = Photo(sequelize);
-  db.Prix = Prix(sequelize);
+  db.Price = Price(sequelize);
   db.PlanningClient = PlanningClient(sequelize);
   db.PlanningClientActivity = planningClientActivity(sequelize);
 
@@ -51,6 +51,10 @@ try {
   // Relation PlanningClient et User (Un PlanningClient appartient à un User)
   db.PlanningClient.belongsTo(db.User, { foreignKey: "userId" });
   db.User.hasMany(db.PlanningClient, { foreignKey: "userId" });
+
+  //Relation Price
+  db.Price.belongsTo(db.Activity, { foreignKey: "activityId"});
+  db.Activity.hasMany(db.Price, { foreignKey: "activityId" });
 } catch (error) {
   console.error(error);
 }
