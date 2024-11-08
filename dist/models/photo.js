@@ -27,10 +27,6 @@ class Photo extends Model {
             timestamps: true,
         });
     }
-    static associate(models) {
-        // Relation avec le modèle Activity
-        Photo.belongsTo(models.Activity, { foreignKey: 'activityId' });
-    }
 }
 export default (sequelize) => {
     Photo.initModel(sequelize);

@@ -9,6 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Router } from 'express';
 import db from '../models/db.js';
+import { getActivitiesForLocation } from '../services/locationService.js';
 const locationRouter = Router();
 // Create Location
 locationRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -77,6 +78,18 @@ locationRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
     catch (error) {
         res.status(500).json({ error: error.message });
+    }
+}));
+// Route GET pour obtenir toutes les activités d'une location et ses sous-locations
+locationRouter.get('/:id/activities', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { id } = req.params;
+    try {
+        // Appel de la fonction pour la location initiale
+        const activities = yield getActivitiesForLocation(id);
+        res.status(200).json(activities);
+    }
+    catch (error) {
+        res.status(500).json({ error });
     }
 }));
 export default locationRouter;

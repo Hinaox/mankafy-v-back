@@ -1,0 +1,43 @@
+{
+  "location": {
+    "4x4": {
+      "low": 300000,
+      "medium": 350000,
+      "high": 400000
+    },
+    "starex": {
+      "low": 270000,
+      "medium": 300000,
+      "high": 350000
+    },
+    "inCity": {
+      "fixedPrice": 200000
+    }
+  },
+  "carburant": {
+    "palier1": {
+      "price": 1700000,
+      "type": "standard"
+    },
+    "palier2": {
+      "price": 2500000,
+      "type": "aventurier"
+    },
+    "palier3": {
+      "price": 3200000,
+      "type": "grandeBoucle"
+    },
+    "consommation": 20
+  },
+  "eau": {
+    "dailyBottlePricePerPerson": 5000
+  },
+  "tarifGuide": {
+    "dailyRate": 100000
+  },
+  "autre": {
+    "palier1": 1600000,
+    "palier2": 2500000,
+    "palier3": 3000000
+  }
+}

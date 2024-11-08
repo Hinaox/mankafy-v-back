@@ -6,7 +6,9 @@ import UserRoleModel from './userRole.js';
 import Location from './location.js';
 import Activity from './activity.js';
 import Photo from './photo.js';
-import Prix from './prix.js'
+import Price from './price.js'
+import Tag from './tag.js';
+import ActivityTags from './activitytags.js';
 
 const conf = config.development;
 
@@ -27,8 +29,10 @@ db.Role = RoleModel(sequelize);
 db.UserRole = UserRoleModel(sequelize);
 db.Location = Location(sequelize);
 db.Activity = Activity(sequelize);
-db.Phto = Photo(sequelize);
-db.Prix = Prix(sequelize);
+db.Photo = Photo(sequelize);
+db.Price = Price(sequelize);
+db.Tag= Tag(sequelize);
+db.ActivityTags = ActivityTags(sequelize);
 
 // Définition des relations entre les modèles
 db.User.belongsToMany(db.Role, { through: db.UserRole });
@@ -41,5 +45,13 @@ db.Location.hasMany(db.Location, { as: 'children', foreignKey: 'parentId' });
 // Relation entre Activity et Location (une Activity appartient à un Location)
 db.Activity.belongsTo(db.Location, { foreignKey: 'locationId' });
 db.Location.hasMany(db.Activity, { foreignKey: 'locationId' });
+
+db.Activity.belongsToMany(db.Tag, { through: db.ActivityTags });
+db.Tag.belongsToMany(db.Activity, { through: db.ActivityTags });
+
+db.Photo.belongsTo(db.Activity, { foreignKey: 'activityId' });
+db.Activity.hasMany(db.Photo, { foreignKey: 'activityId' });
+
+db.Price.belongsTo(db.Activity, { foreignKey: 'activityId' });
 
 export default db;

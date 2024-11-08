@@ -36,10 +36,10 @@ class Photo extends Model {
         );
     }
 
-    static associate(models: any) {
-        // Relation avec le modèle Activity
-        Photo.belongsTo(models.Activity, { foreignKey: 'activityId' });
-    }
+    // static associate(models: any) {
+    //     // Relation avec le modèle Activity
+    //     Photo.belongsTo(models.Activity, { foreignKey: 'activityId' });
+    // }
 }
 
 export default (sequelize: Sequelize) => {

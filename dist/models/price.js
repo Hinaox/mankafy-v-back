@@ -48,4 +48,4 @@ export default (sequelize) => {
     Price.initModel(sequelize);
     return Price;
 };
-//# sourceMappingURL=prix.js.map
+//# sourceMappingURL=price.js.map

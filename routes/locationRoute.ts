@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import db from '../models/db.js';
+import {getActivitiesForLocation} from '../services/locationService.js'
 
 const locationRouter = Router();
 
@@ -68,5 +69,19 @@ locationRouter.delete('/:id', async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+// Route GET pour obtenir toutes les activités d'une location et ses sous-locations
+locationRouter.get('/:id/activities', async (req, res) => {
+    const { id } = req.params;
+
+    try {
+        // Appel de la fonction pour la location initiale
+        const activities = await getActivitiesForLocation(id);
+        res.status(200).json(activities);
+    } catch (error) {
+        res.status(500).json({ error });
+    }
+});
+
 
 export default locationRouter;

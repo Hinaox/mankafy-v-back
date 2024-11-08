@@ -1,15 +1,17 @@
 // Dans le fichier prix.ts
 import { Model, DataTypes, Sequelize } from 'sequelize';
 
-class Prix extends Model {
+class Price extends Model {
     public id!: number;
     public activityId!: number;
     public name!: string;
     public value!: number;
+    public capacity?: number;
+    public rating?: number;
     public description?: string;
 
     static initModel(sequelize: Sequelize) {
-        Prix.init(
+        Price.init(
             {
                 id: {
                     type: DataTypes.INTEGER,
@@ -32,6 +34,14 @@ class Prix extends Model {
                     type: DataTypes.FLOAT,
                     allowNull: false,
                 },
+                rating: {
+                    type: DataTypes.FLOAT,
+                    allowNull: false,
+                },
+                capacity: {
+                    type: DataTypes.INTEGER,
+                    allowNull: true,
+                },
                 description: {
                     type: DataTypes.TEXT,
                     allowNull: true,
@@ -39,20 +49,20 @@ class Prix extends Model {
             },
             {
                 sequelize,
-                modelName: 'prix',
+                modelName: 'price',
                 freezeTableName: true,
                 timestamps: true,
             }
         );
     }
 
-    static associate(models: any) {
-        // Relation avec le modèle Activity
-        Prix.belongsTo(models.Activity, { foreignKey: 'activityId' });
-    }
+    // static associate(models: any) {
+    //     // Relation avec le modèle Activity
+    //     Price.belongsTo(models.Activity, { foreignKey: 'activityId' });
+    // }
 }
 
 export default (sequelize: Sequelize) => {
-    Prix.initModel(sequelize);
-    return Prix;
+    Price.initModel(sequelize);
+    return Price;
 };
