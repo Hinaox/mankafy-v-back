@@ -1,11 +1,11 @@
 const config = {
   development: {
     username: "postgres",
-    password: "admin",
+    password: "anjomakely",
     database: "mankafy_db",
     host: "127.0.0.1",
-    dialect: "postgres"
-  }
+    dialect: "postgres",
+  },
 };
 
 export default config;

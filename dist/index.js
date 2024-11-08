@@ -30,12 +30,13 @@ app.use('/charges', chargesRouter);
 app.use('/activity', priceRouter);
 app.use('/map', mapRoute);
 // Connexion à la base de données et démarrage du serveur
-db.sequelize.sync({ alter: true })
+db.sequelize
+    .sync({ alter: true })
     .then(() => {
-    console.log('Base de données synchronisée.');
+    console.log("Base de données synchronisée.");
 })
     .catch((error) => {
-    console.error('Erreur lors de la synchronisation de la base de données :', error);
+    console.error("Erreur lors de la synchronisation de la base de données :", error);
 });
 app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -62,6 +63,6 @@ app.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     console.log('------------');
 }))();
 app.listen(3000, () => {
-    console.log('Le serveur écoute sur le port 3000.');
+    console.log("Le serveur écoute sur le port 3000.");
 });
 //# sourceMappingURL=index.js.map

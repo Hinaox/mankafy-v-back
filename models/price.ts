@@ -1,5 +1,5 @@
 // Dans le fichier prix.ts
-import { Model, DataTypes, Sequelize } from 'sequelize';
+import { Model, DataTypes, Sequelize } from "sequelize";
 
 class Price extends Model {
     public id!: number;
