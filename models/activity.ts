@@ -9,7 +9,6 @@ class Activity extends Model {
   public duration!: number; // Durée en minutes ou en heures
   public link?: string;
   public description?: string;
-  public activityTypeId?: number;
 
   // Initialisation du modèle avec Sequelize
   static initModel(sequelize: Sequelize) {
@@ -51,14 +50,6 @@ class Activity extends Model {
         description: {
           type: DataTypes.TEXT,
           allowNull: true, // Description de l'activité
-        },
-        activityTypeId: {
-          type: DataTypes.INTEGER,
-          allowNull: true,
-          references: {
-            model: "activityType",
-            key: "id",
-          },
         },
       },
       {
