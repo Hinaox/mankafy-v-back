@@ -20,6 +20,8 @@
     "jsonfile": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
     "mankafy-v-back": "file:",
+    "mapbox": "^1.0.0-beta10",
+    "openai": "^4.71.1",
     "pg": "^8.12.0",
     "pg-hstore": "^2.3.4",
     "sequelize": "^6.37.3"
