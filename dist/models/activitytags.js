@@ -20,7 +20,7 @@ class ActivityTags extends Model {
             },
         }, {
             sequelize,
-            modelName: "activitytags",
+            modelName: "activityTags",
             timestamps: false, // Pas de `createdAt` et `updatedAt`
             freezeTableName: true,
         });
@@ -30,4 +30,4 @@ export default (sequelize) => {
     ActivityTags.initModel(sequelize);
     return ActivityTags;
 };
-//# sourceMappingURL=activitytags.js.map
+//# sourceMappingURL=activityTags.js.map

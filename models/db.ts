@@ -10,6 +10,8 @@ import Price from "./price.js";
 import PlanningClient from "./planningClient.js";
 import planningClientActivity from "./planningClientActivity.js";
 import activityType from "./activityType.js";
+import tag from "./tag.js";
+import activitytags from "./activityTags.js";
 
 const conf = config.development;
 
@@ -37,6 +39,8 @@ try {
   db.PlanningClient = PlanningClient(sequelize);
   db.PlanningClientActivity = planningClientActivity(sequelize);
   db.ActivityType = activityType(sequelize);
+  db.Tag = tag(sequelize);
+  db.ActivityTags = activitytags(sequelize);
 
   // Définition des relations entre les modèles
   db.User.belongsToMany(db.Role, { through: db.UserRole });

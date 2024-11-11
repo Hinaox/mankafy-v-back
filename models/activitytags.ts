@@ -26,7 +26,7 @@ class ActivityTags extends Model {
       },
       {
         sequelize,
-        modelName: "activitytags",
+        modelName: "activityTags",
         timestamps: false, // Pas de `createdAt` et `updatedAt`
         freezeTableName: true,
       }
