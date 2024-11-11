@@ -40,6 +40,14 @@ class Activity extends Model {
                 type: DataTypes.TEXT,
                 allowNull: true, // Description de l'activité
             },
+            activityTypeId: {
+                type: DataTypes.INTEGER,
+                allowNull: true,
+                references: {
+                    model: "activityType",
+                    key: "id",
+                },
+            },
         }, {
             sequelize,
             modelName: "activity",

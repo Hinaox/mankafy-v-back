@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from "sequelize";
 class ActivityTags extends Model {
     static initModel(sequelize) {
         ActivityTags.init({
@@ -6,21 +6,21 @@ class ActivityTags extends Model {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'activity', // Nom du modèle `Activity`
-                    key: 'id', // Clé étrangère sur le modèle `Activity`
+                    model: "activity", // Nom du modèle `Activity`
+                    key: "id", // Clé étrangère sur le modèle `Activity`
                 },
             },
             tagId: {
                 type: DataTypes.INTEGER,
                 allowNull: false,
                 references: {
-                    model: 'tag', // Nom du modèle `Tag`
-                    key: 'id', // Clé étrangère sur le modèle `Tag`
+                    model: "tag", // Nom du modèle `Tag`
+                    key: "id", // Clé étrangère sur le modèle `Tag`
                 },
             },
         }, {
             sequelize,
-            modelName: 'activitytags',
+            modelName: "activitytags",
             timestamps: false, // Pas de `createdAt` et `updatedAt`
             freezeTableName: true,
         });

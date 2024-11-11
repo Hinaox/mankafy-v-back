@@ -9,6 +9,7 @@ import Photo from "./photo.js";
 import Price from "./price.js";
 import PlanningClient from "./planningClient.js";
 import planningClientActivity from "./planningClientActivity.js";
+import activityType from "./activityType.js";
 const conf = config.development;
 // Initialisation de Sequelize avec les paramètres de configuration
 const sequelize = new Sequelize(conf.database, conf.username, conf.password, {
@@ -30,6 +31,7 @@ try {
     db.Price = Price(sequelize);
     db.PlanningClient = PlanningClient(sequelize);
     db.PlanningClientActivity = planningClientActivity(sequelize);
+    db.ActivityType = activityType(sequelize);
     // Définition des relations entre les modèles
     db.User.belongsToMany(db.Role, { through: db.UserRole });
     db.Role.belongsToMany(db.User, { through: db.UserRole });
