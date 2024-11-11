@@ -13,6 +13,7 @@ import activityType from "./activityType.js";
 import tag from "./tag.js";
 import activitytags from "./activityTags.js";
 import activityTypeActivity from "./activityTypeActivity.js";
+import utilService from "services/utilService.js";
 
 const conf = config.development;
 

@@ -19,6 +19,7 @@ import chargesRouter from "./routes/chargesRoute.js";
 import priceRouter from "./routes/priceRoute.js";
 import { getRoute } from "./services/openRouteService.js";
 import mapRoute from "./routes/mapRoute.js";
+import utilService from "./services/utilService.js";
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
 // Initialiser les routes
@@ -35,6 +36,8 @@ db.sequelize
     .sync({ alter: true })
     .then(() => {
     console.log("Base de données synchronisée.");
+    // creation des données d'origine
+    utilService.createDefaultActivityTypes();
 })
     .catch((error) => {
     console.error("Erreur lors de la synchronisation de la base de données :", error);
