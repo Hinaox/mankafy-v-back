@@ -34,6 +34,9 @@ db.sequelize
     console.log("Base de données synchronisée.");
     // creation des données d'origine
     utilService.createDefaultActivityTypes();
+    utilService.createDefaultLocation();
+    utilService.createDefaultRoles();
+    utilService.createDefaultUser();
   })
   .catch((error: Error) => {
     console.error(
@@ -54,7 +57,7 @@ app.listen(3000, () => {
     coordinates: [start, end],
     radiuses: [10000, 10000],
   });
-  const route = await getRoute(bodyData);
+  // const route = await getRoute(bodyData);
 
   // const cityOnRoute = await getCitiesOnRoute(route);
   // console.log("villes:"+cityOnRoute);

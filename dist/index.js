@@ -17,7 +17,6 @@ import planningRoute from "./routes/planningClientRoute.js";
 import tagRoute from "./routes/tagRoute.js";
 import chargesRouter from "./routes/chargesRoute.js";
 import priceRouter from "./routes/priceRoute.js";
-import { getRoute } from "./services/openRouteService.js";
 import mapRoute from "./routes/mapRoute.js";
 import utilService from "./services/utilService.js";
 const app = express();
@@ -38,6 +37,9 @@ db.sequelize
     console.log("Base de données synchronisée.");
     // creation des données d'origine
     utilService.createDefaultActivityTypes();
+    utilService.createDefaultLocation();
+    utilService.createDefaultRoles();
+    utilService.createDefaultUser();
 })
     .catch((error) => {
     console.error("Erreur lors de la synchronisation de la base de données :", error);
@@ -53,7 +55,7 @@ app.listen(3000, () => {
         coordinates: [start, end],
         radiuses: [10000, 10000],
     });
-    const route = yield getRoute(bodyData);
+    // const route = await getRoute(bodyData);
     // const cityOnRoute = await getCitiesOnRoute(route);
     // console.log("villes:"+cityOnRoute);
     console.log("------------");
