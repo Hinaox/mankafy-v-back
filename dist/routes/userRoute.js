@@ -12,9 +12,10 @@ import db from "../models/db.js";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import tokenService from "../services/tokenService.js";
-import authenticateToken from "../services/tokenService.js";
 const router = Router();
 const tsk = process.env.tsk; //token secret key
+// Clé secrète pour vérifier le token
+const SECRET_KEY = process.env.tsk || "";
 //login
 router.post("/login", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
@@ -94,8 +95,46 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             .json({ error: "Erreur lors de la récupération des utilisateurs" });
     }
 }));
-router.get("/user_info", authenticateToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json(req.user);
+router.get("/user_info", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    var retour = null;
+    // Récupérer le token depuis les en-têtes de la requête
+    var token = "";
+    const bearer = req.headers["authorization"];
+    if (bearer) {
+        token = bearer.split(" ")[1];
+    }
+    console.log(token + "----here");
+    if (!token) {
+        return res.status(401).json({ message: "Token non fourni." });
+    }
+    // Vérifier et décoder le token
+    yield new Promise((resolve, reject) => {
+        jwt.verify(token, SECRET_KEY, (err, decoded) => __awaiter(void 0, void 0, void 0, function* () {
+            if (err) {
+                if (err.name === "TokenExpiredError") {
+                    // Token a expiré
+                    // Effectuez une action spécifique, par exemple, rediriger ou renvoyer un message d'erreur
+                    return res
+                        .status(403)
+                        .json({ message: "Session expirée. Veuillez vous reconnecter." });
+                }
+                return res
+                    .status(403)
+                    .json({ message: "Session invalide. Veuillez vous reconnecter." });
+            }
+            const decodedUser = decoded;
+            // get the roles
+            const userRoles = yield db.UserRole.findAll({
+                where: { userId: decodedUser.userId },
+                include: [{ model: db.Role }],
+            });
+            // Si le token est validé, attacher le payload décodé à req.user
+            retour = decodedUser;
+            retour.userRoles = userRoles;
+            resolve();
+        }));
+    });
+    res.json(retour);
 }));
 //exemple d'appel protégé par token
 router.get("/protected", tokenService, (req, res) => {

@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from "express";
 import jwt, { VerifyErrors } from "jsonwebtoken";
+import db from "../models/db.js";
 
 // Clé secrète pour vérifier le token
 const SECRET_KEY = process.env.tsk || "";
@@ -42,8 +43,15 @@ const authenticateToken = (req: Request, res: Response, next: NextFunction) => {
         .json({ message: "Session invalide. Veuillez vous reconnecter." });
     }
 
+    const decodedUser = decoded as DecodedToken;
+
+    // get the roles
+    const userRoles = db.UserRole.findAll({
+      where: { userId: decodedUser.userId },
+      include: [{ model: "role" }],
+    });
     // Si le token est validé, attacher le payload décodé à req.user
-    (req as any).user = decoded as DecodedToken;
+    (req as any).user = decodedUser;
 
     next();
   });

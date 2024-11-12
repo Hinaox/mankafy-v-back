@@ -51,6 +51,9 @@ try {
     //Relation Price
     db.Price.belongsTo(db.Activity, { foreignKey: "activityId" });
     db.Activity.hasMany(db.Price, { foreignKey: "activityId" });
+    // Relation userRole et role
+    db.UserRole.belongsTo(db.Role, { foreignKey: "roleId" });
+    db.Role.hasMany(db.UserRole, { forignKey: "roleId" });
 }
 catch (error) {
     console.error(error);
