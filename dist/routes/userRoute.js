@@ -95,7 +95,7 @@ router.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 }));
 router.get("/user_info", authenticateToken, (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    res.json({ message: "Profil utilisateur", user: req.user });
+    res.json(req.user);
 }));
 //exemple d'appel protégé par token
 router.get("/protected", tokenService, (req, res) => {
@@ -104,7 +104,6 @@ router.get("/protected", tokenService, (req, res) => {
     const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.userId;
     const email = (_b = req.user) === null || _b === void 0 ? void 0 : _b.email;
     res.json({
-        message: "Accès autorisé à la route protégée.",
         // userId: userId,
         // email: email,
         user: req.user,

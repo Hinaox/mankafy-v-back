@@ -89,7 +89,7 @@ router.get("/", async (req, res) => {
 });
 
 router.get("/user_info", authenticateToken, async (req, res, next) => {
-  res.json({ message: "Profil utilisateur", user: (req as any).user });
+  res.json((req as any).user);
 });
 
 //exemple d'appel protégé par token
@@ -99,7 +99,6 @@ router.get("/protected", tokenService, (req, res) => {
   const email = (req as any).user?.email;
 
   res.json({
-    message: "Accès autorisé à la route protégée.",
     // userId: userId,
     // email: email,
     user: (req as any).user,

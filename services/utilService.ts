@@ -60,13 +60,33 @@ class UtilService {
   }
 
   public async createDefaultUser() {
-    const req = await db.Location.findOne({
-      where: {
-        name: "Sud",
-      },
+    const admin = {
+      username: "mankafyadmin",
+      email: "mankafyadmin@gmail.com",
+      password: "comaesta",
+      firstName: "Mankafy",
+      lastName: "Admin",
+    };
+    // verification de l'existence de l'admin
+    var userFound = await db.User.findOne({
+      where: { username: "mankafyadmin" },
     });
 
-    console.log("found location", req);
+    if (!userFound) {
+      // création d'un nouvel admin
+      const newAdmin = (await db.User.create(admin)).dataValues;
+      userFound = newAdmin;
+    }
+    // attribution du role d'admin
+    // verification si l'utilisateur possède le rôle admin
+    const adminRole = (await db.Role.findOne({ where: { name: "admin" } }))
+      .dataValues;
+    const userRole = await db.UserRole.findOne({
+      where: { userId: userFound.id, roleId: adminRole.id },
+    });
+    if (!userRole) {
+      await db.UserRole.create({ userId: userFound.id, roleId: adminRole.id });
+    }
   }
 
   public getActivityTypes(): Promise<
