@@ -12,6 +12,8 @@ import priceRouter from "./routes/priceRoute.js";
 import { getRoute } from "./services/openRouteService.js";
 import mapRoute from "./routes/mapRoute.js";
 import utilService from "./services/utilService.js";
+import activityRouter from "./routes/activityRoute.js";
+import activityTypeRouter from "./routes/activityTypeRoute.js";
 
 const app: Application = express();
 
@@ -26,6 +28,7 @@ app.use("/tag", tagRoute);
 app.use("/charges", chargesRouter);
 app.use("/activity", priceRouter);
 app.use("/map", mapRoute);
+app.use("/activity-types", activityTypeRouter);
 
 // Connexion à la base de données et démarrage du serveur
 db.sequelize
