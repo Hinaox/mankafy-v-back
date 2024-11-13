@@ -7,6 +7,9 @@ class Activity extends Model {
   public point_x!: number;
   public point_y!: number;
   public duration!: number; // Durée en minutes ou en heures
+  public minDuration?: number;
+  public openingHour?: string;
+  public closingHour?: string;
   public link?: string;
   public description?: string;
   public activityTypeId?: number;
@@ -43,6 +46,18 @@ class Activity extends Model {
         duration: {
           type: DataTypes.INTEGER,
           allowNull: true, // Durée de l'activité (exprimée en minutes ou heures)
+        },
+        minDuration: {
+          type: DataTypes.INTEGER,
+          allowNull: true, // Durée minimale de l'activité (minutes)
+        },
+        openingTime: {
+          type: DataTypes.TIME,
+          allowNull: true,
+        },
+        closingTime: {
+          type: DataTypes.TIME,
+          allowNull: true,
         },
         link: {
           type: DataTypes.STRING,

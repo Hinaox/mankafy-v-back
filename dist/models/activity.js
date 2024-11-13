@@ -32,6 +32,18 @@ class Activity extends Model {
                 type: DataTypes.INTEGER,
                 allowNull: true, // Durée de l'activité (exprimée en minutes ou heures)
             },
+            minDuration: {
+                type: DataTypes.INTEGER,
+                allowNull: true, // Durée minimale de l'activité (minutes)
+            },
+            openingTime: {
+                type: DataTypes.TIME,
+                allowNull: true,
+            },
+            closingTime: {
+                type: DataTypes.TIME,
+                allowNull: true,
+            },
             link: {
                 type: DataTypes.STRING,
                 allowNull: true, // Lien vers plus d'informations sur l'activité (site web, etc.)
