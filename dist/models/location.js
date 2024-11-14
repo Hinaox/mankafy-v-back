@@ -1,4 +1,4 @@
-import { Model, DataTypes } from 'sequelize';
+import { Model, DataTypes } from "sequelize";
 class Location extends Model {
     // Initialisation du modèle avec Sequelize
     static initModel(sequelize) {
@@ -14,22 +14,22 @@ class Location extends Model {
             },
             point_x: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
             },
             point_y: {
                 type: DataTypes.FLOAT,
-                allowNull: false,
+                allowNull: true,
             },
             surface: {
                 type: DataTypes.STRING,
-                allowNull: true,
+                allowNull: false,
             },
             parentId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,
                 references: {
-                    model: 'location', // Auto-référence pour créer des relations parent-enfant
-                    key: 'id',
+                    model: "location", // Auto-référence pour créer des relations parent-enfant
+                    key: "id",
                 },
             },
             description: {
@@ -38,7 +38,7 @@ class Location extends Model {
             },
         }, {
             sequelize,
-            modelName: 'location',
+            modelName: "location",
             freezeTableName: true,
         });
     }
