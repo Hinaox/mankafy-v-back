@@ -31,8 +31,8 @@ class Location extends Model {
           allowNull: true,
         },
         surface: {
-          type: DataTypes.STRING,
-          allowNull: false,
+          type: DataTypes.TEXT,
+          allowNull: true,
         },
         parentId: {
           type: DataTypes.INTEGER,
