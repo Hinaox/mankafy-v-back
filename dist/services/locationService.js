@@ -7,13 +7,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import db from '../models/db.js';
+import db from "../models/db.js";
 // Fonction récursive pour récupérer les sous-locations et leurs activités
 export function getActivitiesForLocation(locationId) {
     return __awaiter(this, void 0, void 0, function* () {
         // Récupère la location actuelle avec ses activités
         const location = yield db.Location.findByPk(locationId, {
-            include: [{ model: db.Activity }] // Inclut les activités de cette location
+            include: [{ model: db.Activity }], // Inclut les activités de cette location
         });
         if (!location) {
             return [];
@@ -22,7 +22,7 @@ export function getActivitiesForLocation(locationId) {
         let activities = [...location.Activities];
         // Récupère les sous-locations
         const childLocations = yield db.Location.findAll({
-            where: { parentId: locationId } // parentId est l'ID de la location parent
+            where: { parentId: locationId }, // parentId est l'ID de la location parent
         });
         // Récupère les activités des sous-locations de manière récursive
         for (const childLocation of childLocations) {
@@ -31,5 +31,33 @@ export function getActivitiesForLocation(locationId) {
         }
         return activities;
     });
+}
+// retourne un tableau d'ID
+export function findLocationChildren(locationId, retour) {
+    return new Promise((resolve, reject) => __awaiter(this, void 0, void 0, function* () {
+        if (!retour) {
+            retour = [];
+        }
+        var children = undefined;
+        try {
+            children = yield db.Location.findAll({
+                where: { parentId: locationId },
+            });
+        }
+        catch (error) {
+            reject(error);
+        }
+        if (children)
+            for (let child of children) {
+                retour.push(child.id);
+                try {
+                    yield findLocationChildren(child.id, retour);
+                }
+                catch (error) {
+                    reject(error);
+                }
+            }
+        resolve(retour);
+    }));
 }
 //# sourceMappingURL=locationService.js.map

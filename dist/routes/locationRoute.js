@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 import { Router } from "express";
 import db from "../models/db.js";
-import { getActivitiesForLocation } from "../services/locationService.js";
+import { findLocationChildren, getActivitiesForLocation, } from "../services/locationService.js";
 const locationRouter = Router();
 // Create Location
 locationRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -28,6 +28,17 @@ locationRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(200).json(locations);
     }
     catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+}));
+locationRouter.get("/:id/children", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const id = parseInt(req.params.id);
+        const retour = yield findLocationChildren(id);
+        res.json(retour);
+    }
+    catch (error) {
+        console.error(error);
         res.status(500).json({ error: error.message });
     }
 }));

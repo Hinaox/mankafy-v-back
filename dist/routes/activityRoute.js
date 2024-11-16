@@ -7,12 +7,12 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import { Router } from 'express';
-import db from '../models/db.js';
-import { getFirstTag } from '../services/activityService.js';
+import { Router } from "express";
+import db from "../models/db.js";
+import { findActivitiesByLocation, getFirstTag, } from "../services/activityService.js";
 const activityRouter = Router();
 // Create Activity
-activityRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const activity = yield db.Activity.create(req.body);
         res.status(201).json(activity);
@@ -22,7 +22,7 @@ activityRouter.post('/', (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 }));
 // Read Activities
-activityRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const activities = yield db.Activity.findAll();
         res.status(200).json(activities);
@@ -31,8 +31,19 @@ activityRouter.get('/', (req, res) => __awaiter(void 0, void 0, void 0, function
         res.status(500).json({ error: error.message });
     }
 }));
+activityRouter.get("/byLocation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const locationIdStr = req.query.locationId;
+    if (locationIdStr) {
+        const locationId = parseInt("" + locationIdStr);
+        const retour = yield findActivitiesByLocation(locationId);
+        res.json(retour);
+    }
+    else {
+        res.status(400).json({ error: "location param not found" });
+    }
+}));
 // Read Activity by ID
-activityRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.get("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const activity = yield db.Activity.findByPk(req.params.id);
         if (activity) {
@@ -40,14 +51,14 @@ activityRouter.get('/:id', (req, res) => __awaiter(void 0, void 0, void 0, funct
             res.status(200).json({ activity, firstTag }); // Renvoie l'activité et le premier tag
         }
         else {
-            res.status(404).json({ error: 'Activity not found' });
+            res.status(404).json({ error: "Activity not found" });
         }
     }
     catch (error) {
         res.status(500).json({ error: error.message });
     }
 }));
-activityRouter.get('/:id/full', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.get("/:id/full", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const activityId = req.params.id;
     try {
         const activity = yield db.Activity.findOne({
@@ -66,7 +77,7 @@ activityRouter.get('/:id/full', (req, res) => __awaiter(void 0, void 0, void 0, 
                 {
                     model: db.Tag,
                     through: {
-                        attributes: [] // Exclut les colonnes de la table de jointure
+                        attributes: [], // Exclut les colonnes de la table de jointure
                     },
                     required: false, // Permet d'inclure même s'il n'y a pas de `Tag`
                 },
@@ -76,7 +87,7 @@ activityRouter.get('/:id/full', (req, res) => __awaiter(void 0, void 0, void 0, 
             res.status(200).json(activity);
         }
         else {
-            res.status(404).json({ error: 'Activity not found' });
+            res.status(404).json({ error: "Activity not found" });
         }
     }
     catch (error) {
@@ -84,7 +95,7 @@ activityRouter.get('/:id/full', (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 }));
 // Route pour obtenir toutes les activités d'une location donnée
-activityRouter.get('/location/:locationId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.get("/location/:locationId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const locationId = req.params.locationId; // Récupération de l'ID de la location
     try {
         const activities = yield db.Activity.findAll({
@@ -102,7 +113,7 @@ activityRouter.get('/location/:locationId', (req, res) => __awaiter(void 0, void
                 {
                     model: db.Tag,
                     through: {
-                        attributes: [] // Exclure les colonnes de la table de jointure
+                        attributes: [], // Exclure les colonnes de la table de jointure
                     },
                     required: false, // Inclure même sans tags
                 },
@@ -114,7 +125,7 @@ activityRouter.get('/location/:locationId', (req, res) => __awaiter(void 0, void
             res.status(200).json(activities); // Retourner toutes les activités trouvées
         }
         else {
-            res.status(404).json({ error: 'No activities found for this location' });
+            res.status(404).json({ error: "No activities found for this location" });
         }
     }
     catch (error) {
@@ -122,16 +133,16 @@ activityRouter.get('/location/:locationId', (req, res) => __awaiter(void 0, void
     }
 }));
 // Update Activity
-activityRouter.put('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.put("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const activity = yield db.Activity.update(req.body, {
             where: { id: req.params.id },
         });
         if (activity[0]) {
-            res.status(200).json({ message: 'Activity updated successfully' });
+            res.status(200).json({ message: "Activity updated successfully" });
         }
         else {
-            res.status(404).json({ error: 'Activity not found' });
+            res.status(404).json({ error: "Activity not found" });
         }
     }
     catch (error) {
@@ -139,7 +150,7 @@ activityRouter.put('/:id', (req, res) => __awaiter(void 0, void 0, void 0, funct
     }
 }));
 // Delete Activity
-activityRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.delete("/:id", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const deleted = yield db.Activity.destroy({
             where: { id: req.params.id },
@@ -148,7 +159,7 @@ activityRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
             res.status(204).send();
         }
         else {
-            res.status(404).json({ error: 'Activity not found' });
+            res.status(404).json({ error: "Activity not found" });
         }
     }
     catch (error) {
@@ -156,88 +167,90 @@ activityRouter.delete('/:id', (req, res) => __awaiter(void 0, void 0, void 0, fu
     }
 }));
 // Ajout d'une photo à une activité
-activityRouter.post('/:activityId/photo', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.post("/:activityId/photo", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { activityId } = req.params;
     const { url } = req.body;
     try {
         const activity = yield db.Activity.findByPk(activityId);
         if (!activity) {
-            return res.status(404).json({ error: 'Activity not found' });
+            return res.status(404).json({ error: "Activity not found" });
         }
         const photo = yield db.Photo.create({ activityId, url });
         res.status(201).json(photo);
     }
     catch (error) {
-        res.status(400).json({ error: error.message || 'An error occurred' });
+        res.status(400).json({ error: error.message || "An error occurred" });
     }
 }));
 // Suppression d'une photo d'une activité
-activityRouter.delete('/:activityId/photo/:photoId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.delete("/:activityId/photo/:photoId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { activityId, photoId } = req.params;
     try {
         const photo = yield db.Photo.findOne({
-            where: { id: photoId, activityId }
+            where: { id: photoId, activityId },
         });
         if (!photo) {
-            return res.status(404).json({ error: 'Photo not found' });
+            return res.status(404).json({ error: "Photo not found" });
         }
         yield photo.destroy();
-        res.status(200).json({ message: 'Photo deleted successfully' });
+        res.status(200).json({ message: "Photo deleted successfully" });
     }
     catch (error) {
-        res.status(400).json({ error: error.message || 'An error occurred' });
+        res.status(400).json({ error: error.message || "An error occurred" });
     }
 }));
 // Récupérer la première photo d'une activité
-activityRouter.get('/:activityId/photo/first', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.get("/:activityId/photo/first", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { activityId } = req.params;
     try {
         const firstPhoto = yield db.Photo.findOne({
             where: { activityId },
-            order: [['createdAt', 'ASC']] // Ordre croissant pour obtenir la première photo
+            order: [["createdAt", "ASC"]], // Ordre croissant pour obtenir la première photo
         });
         if (!firstPhoto) {
-            return res.status(404).json({ error: 'No photo found for this activity' });
+            return res
+                .status(404)
+                .json({ error: "No photo found for this activity" });
         }
         res.status(200).json(firstPhoto);
     }
     catch (error) {
-        res.status(400).json({ error: error.message || 'An error occurred' });
+        res.status(400).json({ error: error.message || "An error occurred" });
     }
 }));
 // Ajouter des tags à une activité
-activityRouter.post('/:activityId/tags', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.post("/:activityId/tags", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { activityId } = req.params;
     const { tagIds } = req.body; // Attend une liste d'IDs de tags
     try {
         const activity = yield db.Activity.findByPk(activityId);
         if (!activity) {
-            return res.status(404).json({ error: 'Activity not found' });
+            return res.status(404).json({ error: "Activity not found" });
         }
         // Ajouter les tags à l'activité
         const tags = yield db.Tag.findAll({ where: { id: tagIds } });
         yield activity.addTags(tags);
-        res.status(200).json({ message: 'Tags added successfully' });
+        res.status(200).json({ message: "Tags added successfully" });
     }
     catch (error) {
-        res.status(400).json({ error: error.message || 'An error occurred' });
+        res.status(400).json({ error: error.message || "An error occurred" });
     }
 }));
 // Supprimer un tag d'une activité
-activityRouter.delete('/:activityId/tags/:tagId', (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+activityRouter.delete("/:activityId/tags/:tagId", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { activityId, tagId } = req.params;
     try {
         const activity = yield db.Activity.findByPk(activityId);
         const tag = yield db.Tag.findByPk(tagId);
         if (!activity || !tag) {
-            return res.status(404).json({ error: 'Activity or Tag not found' });
+            return res.status(404).json({ error: "Activity or Tag not found" });
         }
         // Supprimer l'association entre l'activité et le tag
         yield activity.removeTag(tag);
-        res.status(200).json({ message: 'Tag removed successfully' });
+        res.status(200).json({ message: "Tag removed successfully" });
     }
     catch (error) {
-        res.status(400).json({ error: error.message || 'An error occurred' });
+        res.status(400).json({ error: error.message || "An error occurred" });
     }
 }));
 export default activityRouter;

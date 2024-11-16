@@ -65,6 +65,14 @@ try {
   // Relation userRole et role
   db.UserRole.belongsTo(db.Role, { foreignKey: "roleId" });
   db.Role.hasMany(db.UserRole, { forignKey: "roleId" });
+
+  // relation activity et activity tags
+  db.ActivityTags.belongsTo(db.Activity, { foreignKey: "activityId" });
+  db.Activity.hasMany(db.ActivityTags, { foreignKey: "activityId" });
+
+  // relation tag et activityTags
+  db.ActivityTags.belongsTo(db.Tag, { foreignKey: "tagId" });
+  db.Tag.hasMany(db.ActivityTags, { foreignKey: "tagId" });
 } catch (error) {
   console.error(error);
 }

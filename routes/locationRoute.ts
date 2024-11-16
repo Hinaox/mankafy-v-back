@@ -1,6 +1,9 @@
 import { Router } from "express";
 import db from "../models/db.js";
-import { getActivitiesForLocation } from "../services/locationService.js";
+import {
+  findLocationChildren,
+  getActivitiesForLocation,
+} from "../services/locationService.js";
 import { where } from "sequelize";
 
 const locationRouter = Router();
@@ -21,6 +24,17 @@ locationRouter.get("/", async (req, res) => {
     const locations = await db.Location.findAll();
     res.status(200).json(locations);
   } catch (error: any) {
+    res.status(500).json({ error: error.message });
+  }
+});
+
+locationRouter.get("/:id/children", async (req, res) => {
+  try {
+    const id = parseInt(req.params.id);
+    const retour = await findLocationChildren(id);
+    res.json(retour);
+  } catch (error: any) {
+    console.error(error);
     res.status(500).json({ error: error.message });
   }
 });

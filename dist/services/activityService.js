@@ -7,18 +7,22 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-import db from '../models/db.js';
+import { Op } from "sequelize";
+import db from "../models/db.js";
+import { findLocationChildren } from "./locationService.js";
 export function getFirstTag(activityId) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const activity = yield db.Activity.findOne({
                 where: { id: activityId },
-                include: [{
+                include: [
+                    {
                         model: db.Tag,
                         through: {
-                            attributes: [] // Ignore les attributs de la table de liaison
-                        }
-                    }]
+                            attributes: [], // Ignore les attributs de la table de liaison
+                        },
+                    },
+                ],
             });
             if (activity && activity.tags && activity.tags.length > 0) {
                 return activity.tags[0]; // Retourne le premier tag
@@ -29,14 +33,32 @@ export function getFirstTag(activityId) {
         }
         catch (error) {
             if (error instanceof Error) {
-                console.error('Error fetching first tag:', error.message);
+                console.error("Error fetching first tag:", error.message);
                 throw error; // Relance l'erreur pour la gestion externe
             }
             else {
-                console.error('Unexpected error:', error);
-                throw new Error('An unexpected error occurred');
+                console.error("Unexpected error:", error);
+                throw new Error("An unexpected error occurred");
             }
         }
+    });
+}
+export function findActivitiesByLocation(locationId) {
+    return __awaiter(this, void 0, void 0, function* () {
+        var locationIds = [locationId];
+        // find child Locations
+        const children = yield findLocationChildren(locationId);
+        if (children) {
+            locationIds = locationIds.concat(children);
+        }
+        const activities = yield db.Activity.findAll({
+            where: {
+                locationId: {
+                    [Op.in]: locationIds,
+                },
+            },
+        });
+        return activities;
     });
 }
 export function searchActivitiesAndLocations(keyword) {
@@ -47,28 +69,28 @@ export function searchActivitiesAndLocations(keyword) {
             const activities = yield db.Activity.findAll({
                 where: {
                     name: {
-                        [db.Sequelize.Op.like]: searchTerm
-                    }
-                }
+                        [db.Sequelize.Op.like]: searchTerm,
+                    },
+                },
             });
             // Recherche dans la table Location
             const locations = yield db.Location.findAll({
                 where: {
                     name: {
-                        [db.Sequelize.Op.like]: searchTerm
-                    }
-                }
+                        [db.Sequelize.Op.like]: searchTerm,
+                    },
+                },
             });
             return { activities, locations };
         }
         catch (error) {
             if (error instanceof Error) {
-                console.error('Error fetching activities and locations:', error.message);
+                console.error("Error fetching activities and locations:", error.message);
                 throw error; // Relance l'erreur pour la gestion externe
             }
             else {
-                console.error('Unexpected error:', error);
-                throw new Error('An unexpected error occurred');
+                console.error("Unexpected error:", error);
+                throw new Error("An unexpected error occurred");
             }
         }
     });
