@@ -57,6 +57,7 @@ export function findActivitiesByLocation(locationId) {
                     [Op.in]: locationIds,
                 },
             },
+            include: [{ model: db.ActivityType }],
         });
         return activities;
     });

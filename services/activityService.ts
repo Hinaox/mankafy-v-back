@@ -46,6 +46,7 @@ export async function findActivitiesByLocation(locationId: number) {
         [Op.in]: locationIds,
       },
     },
+    include: [{ model: db.ActivityType }],
   });
 
   return activities;

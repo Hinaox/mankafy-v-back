@@ -60,6 +60,9 @@ try {
     // relation tag et activityTags
     db.ActivityTags.belongsTo(db.Tag, { foreignKey: "tagId" });
     db.Tag.hasMany(db.ActivityTags, { foreignKey: "tagId" });
+    // relation activity et activityType
+    db.Activity.belongsTo(db.ActivityType, { foreignKey: "activityTypeId" });
+    db.ActivityType.hasMany(db.Activity, { foreignKey: "activityTypeId" });
 }
 catch (error) {
     console.error(error);
