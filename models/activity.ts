@@ -6,7 +6,7 @@ class Activity extends Model {
   public locationId!: number;
   public point_x!: number;
   public point_y!: number;
-  public duration!: number; // Durée en minutes ou en heures
+  public duration?: number; // Durée en minutes ou en heures
   public minDuration?: number;
   public openingHour?: string;
   public closingHour?: string;
