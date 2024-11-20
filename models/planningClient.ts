@@ -6,6 +6,8 @@ class PlanningClient extends Model {
   public dateDepart!: Date;
   public dateRetour!: Date;
   public isActive!: Boolean;
+  public peopleNumber!: number;
+  public locationId!: number;
 
   static initModel(sequelize: Sequelize) {
     PlanningClient.init(
@@ -34,6 +36,17 @@ class PlanningClient extends Model {
         isActive: {
           type: DataTypes.BOOLEAN,
           allowNull: false,
+        },
+        peopleNumber: {
+          type: DataTypes.INTEGER,
+          allowNull: false,
+        },
+        locationId: {
+          type: DataTypes.INTEGER,
+          references: {
+            model: "location",
+            key: "id",
+          },
         },
       },
       {

@@ -63,6 +63,9 @@ try {
     // relation activity et activityType
     db.Activity.belongsTo(db.ActivityType, { foreignKey: "activityTypeId" });
     db.ActivityType.hasMany(db.Activity, { foreignKey: "activityTypeId" });
+    // relation planningClient et location
+    db.PlanningClient.belongsTo(db.Location, { foreignKey: "locationId" });
+    db.Location.hasMany(db.PlanningClient, { foreignKey: "locationId" });
 }
 catch (error) {
     console.error(error);

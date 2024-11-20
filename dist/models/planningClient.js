@@ -27,6 +27,17 @@ class PlanningClient extends Model {
                 type: DataTypes.BOOLEAN,
                 allowNull: false,
             },
+            peopleNumber: {
+                type: DataTypes.INTEGER,
+                allowNull: false,
+            },
+            locationId: {
+                type: DataTypes.INTEGER,
+                references: {
+                    model: "location",
+                    key: "id",
+                },
+            },
         }, {
             sequelize,
             modelName: "planningClient",
