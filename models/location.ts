@@ -8,6 +8,7 @@ class Location extends Model {
   public surface!: string;
   public parentId?: number; // id_mere, pour indiquer une relation parent-enfant
   public description?: string;
+  public image?: string;
 
   // Initialisation du modèle avec Sequelize
   static initModel(sequelize: Sequelize) {
@@ -44,6 +45,10 @@ class Location extends Model {
         },
         description: {
           type: DataTypes.TEXT,
+          allowNull: true,
+        },
+        image: {
+          type: DataTypes.STRING,
           allowNull: true,
         },
       },

@@ -36,6 +36,10 @@ class Location extends Model {
                 type: DataTypes.TEXT,
                 allowNull: true,
             },
+            image: {
+                type: DataTypes.STRING,
+                allowNull: true,
+            },
         }, {
             sequelize,
             modelName: "location",

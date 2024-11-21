@@ -11,7 +11,7 @@ import PlanningClient from "./planningClient.js";
 import planningClientActivity from "./planningClientActivity.js";
 import activityType from "./activityType.js";
 import tag from "./tag.js";
-import activitytags from "./activityTags.js";
+import activityTags from "./activitytags.js";
 const conf = config.development;
 // Initialisation de Sequelize avec les paramètres de configuration
 const sequelize = new Sequelize(conf.database, conf.username, conf.password, {
@@ -35,7 +35,7 @@ try {
     db.PlanningClientActivity = planningClientActivity(sequelize);
     db.ActivityType = activityType(sequelize);
     db.Tag = tag(sequelize);
-    db.ActivityTags = activitytags(sequelize);
+    db.ActivityTags = activityTags(sequelize);
     // Définition des relations entre les modèles
     db.User.belongsToMany(db.Role, { through: db.UserRole });
     db.Role.belongsToMany(db.User, { through: db.UserRole });

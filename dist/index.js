@@ -23,6 +23,8 @@ import activityTypeRouter from "./routes/activityTypeRoute.js";
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
 // Initialiser les routes
+// Rendre le dossier 'assets' accessible publiquement
+app.use("/assets", express.static("assets"));
 app.use("/planningClient", planningRoute);
 app.use("/users", userRoutes);
 app.use("/location", locationRoute);
