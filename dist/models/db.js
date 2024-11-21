@@ -11,7 +11,7 @@ import PlanningClient from "./planningClient.js";
 import planningClientActivity from "./planningClientActivity.js";
 import activityType from "./activityType.js";
 import tag from "./tag.js";
-import activityTags from "./activitytags.js";
+import activityTags from "./activityTags.js";
 const conf = config.development;
 // Initialisation de Sequelize avec les paramètres de configuration
 const sequelize = new Sequelize(conf.database, conf.username, conf.password, {

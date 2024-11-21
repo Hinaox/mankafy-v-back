@@ -6,8 +6,10 @@ const activityTypeRouter = Router();
 
 // get collection
 activityTypeRouter.get("/", async (req, res) => {
+  const params = req.query;
+
   try {
-    const types = await db.ActivityType.findAll();
+    const types = await db.ActivityType.findAll({ where: params });
     res.status(200).json(types);
   } catch (error: any) {
     res.status(500).json({ error: error.message });

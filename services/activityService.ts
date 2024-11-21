@@ -32,7 +32,10 @@ export async function getFirstTag(activityId: number) {
   }
 }
 
-export async function findActivitiesByLocation(locationId: number) {
+export async function findActivitiesByLocation(
+  locationId: number,
+  filtres?: { activityTypeId: number | undefined }
+) {
   var locationIds = [locationId];
   // find child Locations
   const children: number[] = await findLocationChildren(locationId);
@@ -40,12 +43,18 @@ export async function findActivitiesByLocation(locationId: number) {
     locationIds = locationIds.concat(children);
   }
 
-  const activities = await db.Activity.findAll({
-    where: {
-      locationId: {
-        [Op.in]: locationIds,
-      },
+  const whereParam: any = {
+    locationId: {
+      [Op.in]: locationIds,
     },
+  };
+
+  if (filtres?.activityTypeId) {
+    whereParam.activityTypeId = filtres.activityTypeId;
+  }
+
+  const activities = await db.Activity.findAll({
+    where: whereParam,
     include: [{ model: db.ActivityType }],
   });
 

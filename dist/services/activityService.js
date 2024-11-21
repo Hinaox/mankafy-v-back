@@ -43,7 +43,7 @@ export function getFirstTag(activityId) {
         }
     });
 }
-export function findActivitiesByLocation(locationId) {
+export function findActivitiesByLocation(locationId, filtres) {
     return __awaiter(this, void 0, void 0, function* () {
         var locationIds = [locationId];
         // find child Locations
@@ -51,12 +51,16 @@ export function findActivitiesByLocation(locationId) {
         if (children) {
             locationIds = locationIds.concat(children);
         }
-        const activities = yield db.Activity.findAll({
-            where: {
-                locationId: {
-                    [Op.in]: locationIds,
-                },
+        const whereParam = {
+            locationId: {
+                [Op.in]: locationIds,
             },
+        };
+        if (filtres === null || filtres === void 0 ? void 0 : filtres.activityTypeId) {
+            whereParam.activityTypeId = filtres.activityTypeId;
+        }
+        const activities = yield db.Activity.findAll({
+            where: whereParam,
             include: [{ model: db.ActivityType }],
         });
         return activities;

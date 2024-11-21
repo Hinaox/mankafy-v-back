@@ -33,9 +33,15 @@ activityRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function
 }));
 activityRouter.get("/byLocation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const locationIdStr = req.query.locationId;
+    // filtres
+    const filtres = {};
+    const activityTypeId = req.query.activityTypeId;
+    if (activityTypeId) {
+        filtres.activityTypeId = parseInt("" + activityTypeId);
+    }
     if (locationIdStr) {
         const locationId = parseInt("" + locationIdStr);
-        const retour = yield findActivitiesByLocation(locationId);
+        const retour = yield findActivitiesByLocation(locationId, filtres);
         res.json(retour);
     }
     else {

@@ -30,9 +30,16 @@ activityRouter.get("/", async (req, res) => {
 activityRouter.get("/byLocation", async (req, res) => {
   const locationIdStr = req.query.locationId;
 
+  // filtres
+  const filtres: any = {};
+  const activityTypeId = req.query.activityTypeId;
+  if (activityTypeId) {
+    filtres.activityTypeId = parseInt("" + activityTypeId);
+  }
+
   if (locationIdStr) {
     const locationId = parseInt("" + locationIdStr);
-    const retour = await findActivitiesByLocation(locationId);
+    const retour = await findActivitiesByLocation(locationId, filtres);
     res.json(retour);
   } else {
     res.status(400).json({ error: "location param not found" });
