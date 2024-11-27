@@ -52,6 +52,10 @@ class Activity extends Model {
                 type: DataTypes.TEXT,
                 allowNull: true, // Description de l'activité
             },
+            image: {
+                type: DataTypes.STRING,
+                allowNull: true, // image de l'activité
+            },
             activityTypeId: {
                 type: DataTypes.INTEGER,
                 allowNull: true,

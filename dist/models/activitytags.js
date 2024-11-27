@@ -30,4 +30,4 @@ export default (sequelize) => {
     ActivityTags.initModel(sequelize);
     return ActivityTags;
 };
-//# sourceMappingURL=activityTags.js.map
+//# sourceMappingURL=activitytags.js.map

@@ -12,6 +12,7 @@ class Activity extends Model {
   public closingHour?: string;
   public link?: string;
   public description?: string;
+  public image?: string;
   public activityTypeId?: number;
 
   // Initialisation du modèle avec Sequelize
@@ -66,6 +67,10 @@ class Activity extends Model {
         description: {
           type: DataTypes.TEXT,
           allowNull: true, // Description de l'activité
+        },
+        image: {
+          type: DataTypes.STRING,
+          allowNull: true, // image de l'activité
         },
         activityTypeId: {
           type: DataTypes.INTEGER,
