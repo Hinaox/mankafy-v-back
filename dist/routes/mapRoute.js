@@ -45,7 +45,7 @@ mapRouter.get("/route", (req, res) => __awaiter(void 0, void 0, void 0, function
                 console.log("dossier créé avec succès");
             }
             const dataFilePath = path.join(routesFolder, dataFilename);
-            writeFile(dataFilePath, JSON.stringify(route), "utf8", (err) => {
+            writeFile(dataFilePath, JSON.stringify({ route }), "utf8", (err) => {
                 if (err) {
                     console.error("Erreur lors de l'écriture du fichier :", err);
                 }
