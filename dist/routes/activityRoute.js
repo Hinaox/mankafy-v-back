@@ -10,6 +10,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 import { Router } from "express";
 import db from "../models/db.js";
 import { findActivitiesByLocation, getFirstTag, } from "../services/activityService.js";
+import { getDistanceDurationBetweenActivities } from "../services/openRouteService.js";
 const activityRouter = Router();
 // Create Activity
 activityRouter.post("/", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -29,6 +30,40 @@ activityRouter.get("/", (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         res.status(500).json({ error: error.message });
+    }
+}));
+activityRouter.get("/byLocationWithDistanceDuration", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const locationIdStr = req.query.locationId;
+    // filtres
+    const filtres = {};
+    const activityTypeId = req.query.activityTypeId;
+    if (activityTypeId) {
+        filtres.activityTypeId = parseInt("" + activityTypeId);
+    }
+    if (locationIdStr) {
+        const locationId = parseInt("" + locationIdStr);
+        const activities = yield findActivitiesByLocation(locationId, filtres);
+        const retour = [];
+        for (let activity of activities) {
+            const line = { activity };
+            try {
+                if (!activity.id) {
+                    throw "undefined activity.id";
+                }
+                const distanceDuration = yield getDistanceDurationBetweenActivities(activity.id, null);
+                line.distance = distanceDuration.distance;
+                line.duration = distanceDuration.duration;
+            }
+            catch (error) {
+                console.error(error);
+                continue;
+            }
+            retour.push(line);
+        }
+        res.json(retour);
+    }
+    else {
+        res.status(400).json({ error: "location param not found" });
     }
 }));
 activityRouter.get("/byLocation", (req, res) => __awaiter(void 0, void 0, void 0, function* () {

@@ -1,6 +1,10 @@
 import { Router } from "express";
 import db from "../models/db.js";
-import { getRoute, getRouteLocally } from "../services/openRouteService.js";
+import {
+  getDistanceDurationBetweenActivities,
+  getRoute,
+  getRouteLocally,
+} from "../services/openRouteService.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync, mkdirSync, writeFile } from "fs";
@@ -62,6 +66,31 @@ mapRouter.get("/route", async (req, res) => {
     }
   } catch (error: any) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+mapRouter.get("/distanceBetweenActivities", async (req, res) => {
+  var activity_id: any = req.query.activity_id;
+  var another_activity_id: any = req.query.another_activity_id;
+  if (!activity_id) {
+    res.status(400).json("undefined activity_id");
+    return;
+  }
+  if (!another_activity_id) {
+    another_activity_id = null;
+  } else {
+    another_activity_id = parseInt(another_activity_id);
+  }
+  activity_id = parseInt(activity_id);
+
+  try {
+    const retour = await getDistanceDurationBetweenActivities(
+      activity_id,
+      another_activity_id
+    );
+    res.json(retour);
+  } catch (error) {
+    res.status(500).json(error);
   }
 });
 

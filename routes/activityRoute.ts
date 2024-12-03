@@ -4,6 +4,7 @@ import {
   findActivitiesByLocation,
   getFirstTag,
 } from "../services/activityService.js";
+import { getDistanceDurationBetweenActivities } from "../services/openRouteService.js";
 
 const activityRouter = Router();
 
@@ -24,6 +25,47 @@ activityRouter.get("/", async (req, res) => {
     res.status(200).json(activities);
   } catch (error: any) {
     res.status(500).json({ error: error.message });
+  }
+});
+
+activityRouter.get("/byLocationWithDistanceDuration", async (req, res) => {
+  const locationIdStr = req.query.locationId;
+
+  // filtres
+  const filtres: any = {};
+  const activityTypeId = req.query.activityTypeId;
+  if (activityTypeId) {
+    filtres.activityTypeId = parseInt("" + activityTypeId);
+  }
+
+  if (locationIdStr) {
+    const locationId = parseInt("" + locationIdStr);
+    const activities = await findActivitiesByLocation(locationId, filtres);
+
+    const retour: any[] = [];
+    for (let activity of activities) {
+      const line: any = { activity };
+      try {
+        if (!activity.id) {
+          throw "undefined activity.id";
+        }
+        const distanceDuration = await getDistanceDurationBetweenActivities(
+          activity.id,
+          null
+        );
+        line.distance = distanceDuration.distance;
+        line.duration = distanceDuration.duration;
+      } catch (error) {
+        console.error(error);
+        continue;
+      }
+
+      retour.push(line);
+    }
+
+    res.json(retour);
+  } else {
+    res.status(400).json({ error: "location param not found" });
   }
 });
 

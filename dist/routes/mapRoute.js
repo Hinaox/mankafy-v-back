@@ -8,7 +8,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Router } from "express";
-import { getRoute, getRouteLocally } from "../services/openRouteService.js";
+import { getDistanceDurationBetweenActivities, getRoute, getRouteLocally, } from "../services/openRouteService.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync, mkdirSync, writeFile } from "fs";
@@ -60,6 +60,28 @@ mapRouter.get("/route", (req, res) => __awaiter(void 0, void 0, void 0, function
     }
     catch (error) {
         res.status(500).json({ error: error.message });
+    }
+}));
+mapRouter.get("/distanceBetweenActivities", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var activity_id = req.query.activity_id;
+    var another_activity_id = req.query.another_activity_id;
+    if (!activity_id) {
+        res.status(400).json("undefined activity_id");
+        return;
+    }
+    if (!another_activity_id) {
+        another_activity_id = null;
+    }
+    else {
+        another_activity_id = parseInt(another_activity_id);
+    }
+    activity_id = parseInt(activity_id);
+    try {
+        const retour = yield getDistanceDurationBetweenActivities(activity_id, another_activity_id);
+        res.json(retour);
+    }
+    catch (error) {
+        res.status(500).json(error);
     }
 }));
 export default mapRouter;
