@@ -1,6 +1,6 @@
 const config = {
   development: {
-    username: "postgres",
+    username: "loicrasoarahona",
     password: "anjomakely",
     database: "mankafy_db",
     host: "127.0.0.1",

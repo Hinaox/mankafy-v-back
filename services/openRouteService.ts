@@ -2,6 +2,7 @@
 
 import {
   existsSync,
+  mkdirSync,
   readdir,
   readdirSync,
   readFile,
@@ -81,40 +82,49 @@ export async function getDistanceDurationBetweenActivities(
 
   // read saved datas
   const folderPath = path.join(__dirname, "../assets/routes");
-  const fileList = readdirSync(folderPath);
-  // traitement des fichiers
-  const fileListSplited: string[][] = [];
-  for (let filename of fileList) {
-    try {
-      const firstPart = filename.substring(0, filename.lastIndexOf("."));
-      const firstPartSplit = firstPart.split(",");
+  if (existsSync(folderPath)) {
+    const fileList = readdirSync(folderPath);
+    // traitement des fichiers
+    const fileListSplited: string[][] = [];
+    for (let filename of fileList) {
+      try {
+        const firstPart = filename.substring(0, filename.lastIndexOf("."));
+        const firstPartSplit = firstPart.split(",");
 
-      if (firstPartSplit.length == 4) {
-        fileListSplited.push([
-          firstPartSplit[0] + "," + firstPartSplit[1],
-          firstPartSplit[2] + "," + firstPartSplit[3],
-        ]);
-      } else throw "incorrect filename for : " + filename;
-    } catch (error) {
-      console.error(error);
+        if (firstPartSplit.length == 4) {
+          fileListSplited.push([
+            firstPartSplit[0] + "," + firstPartSplit[1],
+            firstPartSplit[2] + "," + firstPartSplit[3],
+          ]);
+        } else throw "incorrect filename for : " + filename;
+      } catch (error) {
+        console.error(error);
+      }
     }
-  }
 
-  const fileFound = fileListSplited.find(
-    (el) =>
-      el.some((anEl) => anEl == rechercheCoords[0]) &&
-      el.some((anEl) => anEl == rechercheCoords[1])
-  );
-
-  if (fileFound) {
-    const fileName = fileFound.join(",") + ".json";
-    const fileContent: RouteFetch = JSON.parse(
-      readFileSync(path.join(folderPath, fileName)).toString()
+    const fileFound = fileListSplited.find(
+      (el) =>
+        el.some((anEl) => anEl == rechercheCoords[0]) &&
+        el.some((anEl) => anEl == rechercheCoords[1])
     );
-    if (fileContent.route?.routes?.length) {
-      const retour = fileContent.route.routes[0].summary;
-      if (retour) {
-        return retour;
+
+    if (fileFound) {
+      const fileName = fileFound.join(",") + ".json";
+      const fileContent: RouteFetch = JSON.parse(
+        readFileSync(path.join(folderPath, fileName)).toString()
+      );
+      if (fileContent.route?.routes?.length) {
+        const retour = fileContent.route.routes[0].summary;
+        if (retour) {
+          // abandonné
+          // ajouter 2h à la durée
+          // if (retour.duration) {
+          //   retour.duration += 7200;
+          // }
+          // nouvelle méthode: calcul de la durée par rapport à le vitesse de 50km/h
+          retour.duration = (retour.distance / 1000 / 50) * 3600;
+          return retour;
+        }
       }
     }
   }
@@ -135,9 +145,20 @@ export async function getDistanceDurationBetweenActivities(
       const summary = retour.route.routes[0].summary;
       if (summary) {
         // save file first
+        if (!existsSync(folderPath)) {
+          mkdirSync(folderPath, { recursive: true });
+        }
         const fileName = bodyData.coordinates.join(",") + ".json";
         const filePath = path.join(folderPath, fileName);
         writeFileSync(filePath, JSON.stringify(retour));
+        // abandonné
+        // ajouter 2h à la durée
+        // if (summary.duration) {
+        //   summary.duration += 7200;
+        // }
+        // nouvelle méthode: calcul de la durée par rapport à le vitesse de 50km/h
+        summary.duration = (summary.distance / 50) * 3600;
+
         return summary;
       }
     }
