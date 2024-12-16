@@ -1,0 +1,20 @@
+[
+    {
+        "id": 1,
+        "name": "Mvola",
+        "accountNumber": "+261(0) 34 34 344 44",
+        "accountName": "Miaro Fitia"
+    },
+    {
+        "id": 2,
+        "name": "Orange Money",
+        "accountNumber": "+261(0) 32 32 322 22",
+        "accountName": "Miaro Fitia"
+    },
+    {
+        "id": 3,
+        "name": "VISA",
+        "accountNumber": "MG46 0000 8030 1605 0030 1377 643",
+        "accountName": "Miaro Fitia"
+    }
+]

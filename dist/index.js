@@ -20,8 +20,15 @@ import priceRouter from "./routes/priceRoute.js";
 import mapRoute from "./routes/mapRoute.js";
 import utilService from "./services/utilService.js";
 import activityTypeRouter from "./routes/activityTypeRoute.js";
+import paiementRouter from "./routes/paiementRoute.js";
+import cors from 'cors';
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
+app.use(cors({
+    origin: 'http://localhost:4200', // Remplacez par l'URL de votre frontend
+    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
+    allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+}));
 // Initialiser les routes
 // Rendre le dossier 'assets' accessible publiquement
 app.use("/assets", express.static("assets"));
@@ -34,6 +41,7 @@ app.use("/charges", chargesRouter);
 app.use("/activity", priceRouter);
 app.use("/map", mapRoute);
 app.use("/activity-types", activityTypeRouter);
+app.use("/paiement-types", paiementRouter);
 // Connexion à la base de données et démarrage du serveur
 db.sequelize
     .sync({ alter: true })
