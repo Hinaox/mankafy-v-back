@@ -42,7 +42,6 @@ app.use("/activity", priceRouter);
 app.use("/map", mapRoute);
 app.use("/activity-types", activityTypeRouter);
 app.use("/paiement-types", paiementRouter);
-// Connexion à la base de données et démarrage du serveur
 db.sequelize
     .sync({ alter: true })
     .then(() => {

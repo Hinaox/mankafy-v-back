@@ -8,15 +8,67 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 import { Router } from "express";
+import db from "../models/db.js";
 import { getDistanceDurationBetweenActivities, getRoute, getRouteLocally, } from "../services/openRouteService.js";
 import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync, mkdirSync, writeFile } from "fs";
+import { LocationService } from "../services/locationService.js";
 const mapRouter = Router();
 // Obtenir le chemin actuel du fichier
 const __filename = fileURLToPath(import.meta.url);
 // Obtenir le répertoire du fichier actuel
 const __dirname = path.dirname(__filename);
+mapRouter.get("/distanceDuration", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const location1_idStr = req.query.location_id;
+    const location2_idStr = req.query.another_location_id;
+    if (!location1_idStr) {
+        res.status(400).json({ error: "Unspecified location1_id" });
+        return;
+    }
+    const location1_id = parseInt(`${location1_idStr}`);
+    var location2_id = null;
+    if (location2_idStr) {
+        location2_id = parseInt(`${location2_idStr}`);
+    }
+    try {
+        const location1 = yield db.Location.findByPk(location1_id);
+        var location2 = null;
+        if (location2_id) {
+            location2 = yield db.Location.findByPk(location2_id);
+        }
+        const retour = yield LocationService.getDistanceDurationBetweenLocations(location1, location2);
+        res.json(retour);
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
+}));
+mapRouter.get("/locationsRoutes", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const location1_idStr = req.query.location_id;
+    const location2_idStr = req.query.another_location_id;
+    if (!location1_idStr) {
+        res.status(400).json({ error: "Unspecified location1_id" });
+        return;
+    }
+    const location1_id = parseInt(`${location1_idStr}`);
+    var location2_id = null;
+    if (location2_idStr) {
+        location2_id = parseInt(`${location2_idStr}`);
+    }
+    try {
+        const location1 = yield db.Location.findByPk(location1_id);
+        var location2 = null;
+        if (location2_id) {
+            location2 = yield db.Location.findByPk(location2_id);
+        }
+        const retour = yield LocationService.getRouteBetweenLocations(location1, location2);
+        res.json(retour);
+    }
+    catch (error) {
+        res.status(500).json(error);
+    }
+}));
 mapRouter.get("/route", (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { coords } = req.query;

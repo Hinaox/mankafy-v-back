@@ -8,6 +8,7 @@ import {
 import path from "path";
 import { fileURLToPath } from "url";
 import { existsSync, mkdirSync, writeFile } from "fs";
+import { LocationService } from "../services/locationService.js";
 
 const mapRouter = Router();
 
@@ -16,6 +17,66 @@ const __filename = fileURLToPath(import.meta.url);
 
 // Obtenir le répertoire du fichier actuel
 const __dirname = path.dirname(__filename);
+
+mapRouter.get("/distanceDuration", async (req, res) => {
+  const location1_idStr = req.query.location_id;
+  const location2_idStr = req.query.another_location_id;
+  if (!location1_idStr) {
+    res.status(400).json({ error: "Unspecified location1_id" });
+    return;
+  }
+  const location1_id = parseInt(`${location1_idStr}`);
+  var location2_id: number | null = null;
+  if (location2_idStr) {
+    location2_id = parseInt(`${location2_idStr}`);
+  }
+
+  try {
+    const location1 = await db.Location.findByPk(location1_id);
+    var location2 = null;
+    if (location2_id) {
+      location2 = await db.Location.findByPk(location2_id);
+    }
+
+    const retour = await LocationService.getDistanceDurationBetweenLocations(
+      location1,
+      location2
+    );
+    res.json(retour);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
+
+mapRouter.get("/locationsRoutes", async (req, res) => {
+  const location1_idStr = req.query.location_id;
+  const location2_idStr = req.query.another_location_id;
+  if (!location1_idStr) {
+    res.status(400).json({ error: "Unspecified location1_id" });
+    return;
+  }
+  const location1_id = parseInt(`${location1_idStr}`);
+  var location2_id: number | null = null;
+  if (location2_idStr) {
+    location2_id = parseInt(`${location2_idStr}`);
+  }
+
+  try {
+    const location1 = await db.Location.findByPk(location1_id);
+    var location2 = null;
+    if (location2_id) {
+      location2 = await db.Location.findByPk(location2_id);
+    }
+
+    const retour = await LocationService.getRouteBetweenLocations(
+      location1,
+      location2
+    );
+    res.json(retour);
+  } catch (error) {
+    res.status(500).json(error);
+  }
+});
 
 mapRouter.get("/route", async (req, res) => {
   try {

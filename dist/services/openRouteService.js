@@ -18,9 +18,9 @@ export const defaultStartPoint = [
     47.52113602393204, -18.90332092867509,
 ];
 const API_KEY = process.env.ORS_API_KEY || ""; // Remplacez par votre clé API ORS
-const __filename = fileURLToPath(import.meta.url);
+export const __filename = fileURLToPath(import.meta.url);
 // Obtenir le répertoire du fichier actuel
-const __dirname = path.dirname(__filename);
+export const __dirname = path.dirname(__filename);
 export function getRouteLocally(fileName) {
     const filePath = path.join(__dirname, "../assets/routes/", fileName);
     if (existsSync(filePath)) {
