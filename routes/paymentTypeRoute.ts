@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { readPaiements, addPaiement, updatePaiement, deletePaiement } from '../services/paiementService.js';
 
-const paiementRouter = Router();
+const paymentTypeRouter = Router();
 
 // Lire tous les paiements
-paiementRouter.get('/', (req, res) => {
+paymentTypeRouter.get('/', (req, res) => {
     try {
         const paiements = readPaiements();
         res.status(200).json(paiements);
@@ -29,7 +29,7 @@ paiementRouter.get('/', (req, res) => {
 //         res.status(400).json({ error: error.message });
 //     }
 // });
-paiementRouter.get('/:name', (req, res) => {
+paymentTypeRouter.get('/:name', (req, res) => {
     const name = req.params.name; // Nom du moyen de paiement
     try {
         const paiements = readPaiements(); // Fonction pour lire le fichier JSON
@@ -51,7 +51,7 @@ paiementRouter.get('/:name', (req, res) => {
 });
 
 // Ajouter un nouveau paiement
-paiementRouter.post('/', (req, res) => {
+paymentTypeRouter.post('/', (req, res) => {
     const { path, paiementData } = req.body;
     try {
         const updatedPaiements = addPaiement(path, paiementData);
@@ -62,7 +62,7 @@ paiementRouter.post('/', (req, res) => {
 });
 
 // Modifier un paiement existant
-paiementRouter.put('/:path', (req, res) => {
+paymentTypeRouter.put('/:path', (req, res) => {
     const path = req.params.path.replace(/_/g, '.'); // Remplace les underscores par des points pour la syntaxe de chemin
     const paiementData = req.body;
 
@@ -75,7 +75,7 @@ paiementRouter.put('/:path', (req, res) => {
 });
 
 // Supprimer un paiement
-paiementRouter.delete('/:path', (req, res) => {
+paymentTypeRouter.delete('/:path', (req, res) => {
     const path = req.params.path.replace(/_/g, '.'); // Remplace les underscores par des points pour la syntaxe de chemin
 
     try {
@@ -86,4 +86,4 @@ paiementRouter.delete('/:path', (req, res) => {
     }
 });
 
-export default paiementRouter;
+export default paymentTypeRouter;

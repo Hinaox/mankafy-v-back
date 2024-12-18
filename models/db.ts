@@ -12,6 +12,7 @@ import planningClientActivity from "./planningClientActivity.js";
 import activityType from "./activityType.js";
 import tag from "./tag.js";
 import activityTags from "./activitytags.js";
+import payment from "./payment.js";
 
 const conf = config.development;
 
@@ -41,6 +42,7 @@ try {
   db.ActivityType = activityType(sequelize);
   db.Tag = tag(sequelize);
   db.ActivityTags = activityTags(sequelize);
+  db.Payment = payment(sequelize);
 
   // Définition des relations entre les modèles
   db.User.belongsToMany(db.Role, { through: db.UserRole });
@@ -81,6 +83,10 @@ try {
   // relation planningClient et location
   db.PlanningClient.belongsTo(db.Location, { foreignKey: "locationId" });
   db.Location.hasMany(db.PlanningClient, { foreignKey: "locationId" });
+
+  //relation paiement et user
+  db.Payment.belongsTo(db.PlanningClient, { foreignKey: "planningClientId"});
+  db.PlanningClient.hasMany(db.Payment,{foreignKey:"planningClientId"});
 } catch (error) {
   console.error(error);
 }

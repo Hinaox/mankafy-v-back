@@ -5,7 +5,6 @@ import db from "./models/db.js";
 import locationRoute from "./routes/locationRoute.js";
 import activityRoute from "./routes/activityRoute.js";
 import planningRoute from "./routes/planningClientRoute.js";
-import { generateCompletion } from "./chatbot/chatbot.js";
 import tagRoute from "./routes/tagRoute.js";
 import chargesRouter from "./routes/chargesRoute.js";
 import priceRouter from "./routes/priceRoute.js";
@@ -14,7 +13,8 @@ import mapRoute from "./routes/mapRoute.js";
 import utilService from "./services/utilService.js";
 import activityRouter from "./routes/activityRoute.js";
 import activityTypeRouter from "./routes/activityTypeRoute.js";
-import paiementRouter from "./routes/paiementRoute.js";
+import paymentTypeRouter from "./routes/paymentTypeRoute.js";
+import chatbotRouter from "./routes/chatRoute.js";
 import cors from 'cors';
 
 const app: Application = express();
@@ -37,8 +37,8 @@ app.use("/charges", chargesRouter);
 app.use("/activity", priceRouter);
 app.use("/map", mapRoute);
 app.use("/activity-types", activityTypeRouter);
-app.use("/paiement-types",paiementRouter);
-
+app.use("/paiement-types", paymentTypeRouter);
+app.use("/chatbot", chatbotRouter);
 // Connexion à la base de données et démarrage du serveur
 db.sequelize
   .sync({ alter: true })

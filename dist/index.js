@@ -20,7 +20,8 @@ import priceRouter from "./routes/priceRoute.js";
 import mapRoute from "./routes/mapRoute.js";
 import utilService from "./services/utilService.js";
 import activityTypeRouter from "./routes/activityTypeRoute.js";
-import paiementRouter from "./routes/paiementRoute.js";
+import paymentTypeRouter from "./routes/paymentTypeRoute.js";
+import chatbotRouter from "./routes/chatRoute.js";
 import cors from 'cors';
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
@@ -41,7 +42,8 @@ app.use("/charges", chargesRouter);
 app.use("/activity", priceRouter);
 app.use("/map", mapRoute);
 app.use("/activity-types", activityTypeRouter);
-app.use("/paiement-types", paiementRouter);
+app.use("/paiement-types", paymentTypeRouter);
+app.use("/chatbot", chatbotRouter);
 // Connexion à la base de données et démarrage du serveur
 db.sequelize
     .sync({ alter: true })

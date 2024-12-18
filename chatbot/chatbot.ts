@@ -1,26 +1,33 @@
-import OpenAI from "openai";
-
-// Initialiser OpenAI avec l'API clé (charge-la depuis une variable d'environnement)
+import {OpenAI } from "openai";
+import * as dotenv from 'dotenv';
+// Initialisation de la configuration OpenAI
 const openai = new OpenAI({
-    apiKey: process.env.OPENAI_API_KEY, // Assure-toi que la clé API est stockée dans ton fichier .env
+    apiKey: process.env.OPENAIAPI_KEY, // Assure-toi que la clé API est stockée dans ton fichier .env
 });
 
-export const generateCompletion = async () => {
+/**
+ * Fonction pour obtenir une réponse du chatbot.
+ * @param message Le message envoyé par l'utilisateur.
+ * @returns La réponse générée par le chatbot.
+ */
+export const useChatbot = async (message: string): Promise<string> => {
     try {
+        console.log(process.env.OPENAIAPI_KEY);
         const completion = await openai.chat.completions.create({
-            model: "gpt-3.5-turbo", // Tu peux adapter selon le modèle souhaité
+            model: "gpt-3.5-turbo-16k",
             messages: [
-                { role: "system", content: "You are a helpful assistant." },
                 {
-                    role: "user",
-                    content: "Write a haiku about recursion in programming.",
-                },
+                    role: "system",
+                    content: "You are a helpful assistant, serving of chatbot for a tourism agency(Mankafy Voyage).",
+                }, 
+                { role: "user", content: message }
             ],
         });
 
-        return completion.choices[0].message.content;
+        // Retourner la réponse du chatbot
+        return completion.choices[0].message?.content || "No response";
     } catch (error) {
-        console.error("Error generating completion:", error);
-        throw error;
+        console.error("Error in getChatbotResponse:", error);
+        throw new Error("Chatbot failed to respond");
     }
 };
