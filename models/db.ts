@@ -13,6 +13,8 @@ import activityType from "./activityType.js";
 import tag from "./tag.js";
 import activityTags from "./activitytags.js";
 import payment from "./payment.js";
+import RouteDigraph from "./RouteDigraph.js";
+import RouteDigraphChild from "./RouteDigraphChild.js";
 
 const conf = config.development;
 
@@ -43,6 +45,8 @@ try {
   db.Tag = tag(sequelize);
   db.ActivityTags = activityTags(sequelize);
   db.Payment = payment(sequelize);
+  db.RouteDigraph = RouteDigraph(sequelize);
+  db.RouteDigraphChild = RouteDigraphChild(sequelize);
 
   // Définition des relations entre les modèles
   db.User.belongsToMany(db.Role, { through: db.UserRole });
@@ -87,6 +91,25 @@ try {
   //relation paiement et user
   db.Payment.belongsTo(db.PlanningClient, { foreignKey: "planningClientId"});
   db.PlanningClient.hasMany(db.Payment,{foreignKey:"planningClientId"});
+  // relation routeDigraph et routeDigraphChild
+  db.RouteDigraphChild.belongsTo(db.RouteDigraph, {
+    foreignKey: "routeDigraphId",
+  });
+  db.RouteDigraph.hasMany(db.RouteDigraphChild, {
+    foreignKey: "routeDigraphId",
+  });
+  db.RouteDigraphChild.belongsTo(db.RouteDigraph, {
+    foreignKey: "childId",
+  });
+  db.RouteDigraph.hasMany(db.RouteDigraphChild, {
+    foreignKey: "childId",
+  });
+
+  // relation routeDigraph et location
+  db.RouteDigraph.belongsTo(db.Location, { foreignKey: "parentLocationId" });
+  db.Location.hasMany(db.RouteDigraph, { foreignKey: "parentLocationId" });
+  db.RouteDigraph.belongsTo(db.Location, { foreignKey: "locationId" });
+  db.Location.hasMany(db.RouteDigraph, { foreignKey: "locationId" });
 } catch (error) {
   console.error(error);
 }

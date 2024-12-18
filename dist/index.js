@@ -23,12 +23,13 @@ import activityTypeRouter from "./routes/activityTypeRoute.js";
 import paymentTypeRouter from "./routes/paymentTypeRoute.js";
 import chatbotRouter from "./routes/chatRoute.js";
 import cors from 'cors';
+import routeDigraphRouter from "./routes/routeDigraphRoute.js";
 const app = express();
 app.use(express.json()); // Middleware pour gérer les données JSON
 app.use(cors({
-    origin: 'http://localhost:4200', // Remplacez par l'URL de votre frontend
-    methods: ['GET', 'POST', 'PUT', 'DELETE'], // Méthodes HTTP autorisées
-    allowedHeaders: ['Content-Type', 'Authorization'], // En-têtes autorisés
+    origin: "http://localhost:4200", // Remplacez par l'URL de votre frontend
+    methods: ["GET", "POST", "PUT", "DELETE"], // Méthodes HTTP autorisées
+    allowedHeaders: ["Content-Type", "Authorization"], // En-têtes autorisés
 }));
 // Initialiser les routes
 // Rendre le dossier 'assets' accessible publiquement
@@ -44,6 +45,7 @@ app.use("/map", mapRoute);
 app.use("/activity-types", activityTypeRouter);
 app.use("/paiement-types", paymentTypeRouter);
 app.use("/chatbot", chatbotRouter);
+app.use("/route-digraphs", routeDigraphRouter);
 // Connexion à la base de données et démarrage du serveur
 db.sequelize
     .sync({ alter: true })
