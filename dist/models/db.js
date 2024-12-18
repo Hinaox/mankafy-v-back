@@ -72,8 +72,10 @@ try {
     // relation planningClient et location
     db.PlanningClient.belongsTo(db.Location, { foreignKey: "locationId" });
     db.Location.hasMany(db.PlanningClient, { foreignKey: "locationId" });
+    //relation paiement et user
     db.Payment.belongsTo(db.PlanningClient, { foreignKey: "planningClientId" });
     db.PlanningClient.hasMany(db.Payment, { foreignKey: "planningClientId" });
+    // relation routeDigraph et routeDigraphChild
     db.RouteDigraphChild.belongsTo(db.RouteDigraph, {
         foreignKey: "routeDigraphId",
     });
