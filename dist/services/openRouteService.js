@@ -110,8 +110,7 @@ export function getDistanceDurationBetweenActivities(activity_id, another_activi
                         // if (retour.duration) {
                         //   retour.duration += 7200;
                         // }
-                        // nouvelle méthode: calcul de la durée par rapport à le vitesse de 50km/h
-                        retour.duration = (retour.distance / 1000 / 50) * 3600;
+                        retour.duration *= 1.35;
                         return retour;
                     }
                 }
@@ -143,8 +142,7 @@ export function getDistanceDurationBetweenActivities(activity_id, another_activi
                     // if (summary.duration) {
                     //   summary.duration += 7200;
                     // }
-                    // nouvelle méthode: calcul de la durée par rapport à le vitesse de 50km/h
-                    summary.duration = (summary.distance / 50) * 3600;
+                    summary.duration *= 1.35;
                     return summary;
                 }
             }
